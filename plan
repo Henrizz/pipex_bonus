@@ -1,0 +1,69 @@
+Key Concepts
+File Manipulation: You'll need to use functions like open, close, read, and write to handle file operations.
+Process Management: You'll use functions like fork, execve, wait, and waitpid to manage processes.
+Piping: You'll create pipes using pipe and redirect the input/output of commands using dup and dup2.
+Error Handling: Ensure thorough error handling using functions like perror, strerror, and exit to prevent unexpected behavior or crashes.
+
+Implementation Steps
+Parse command line arguments to extract file names and commands.
+
+Main checklist
+
+Check the existence of infile and outfile
+
+be sure to understand what > does when the file does not exist
+
+Create the necessary pipe (or pipes)
+
+Create a child process for each command
+
+Wait for all the processes to end before writing to the outfile
+Create a pipe using pipe.
+Fork a child process.
+Redirect standard input/output of child process using dup2.
+Execute cmd1 in the child process using execve.
+
+Execute checklist
+Remember that the execve() function needs the path to a binary file as parameter, so you'll have to find where the commands binaries are stored on your computer. Before going further, you have to know how to find any command binary.
+
+Check in all possible locations if the binary (command) requested by the user exists.
+
+"Build" the arguments array for the command.
+
+Execute the command using execve()
+
+In the parent process, fork another child process.
+Redirect standard input/output of the new child process.
+Execute cmd2 in the new child process.
+Wait for both child processes to finish using wait or waitpid.
+Handle errors and memory management carefully.
+
+
+
+helpful githubs:
+https://github.com/jdecorte-be/42-Pipex
+
+
+PLAN: 
+MAIN
+
+	- argc needs to be 5
+	- make fork, then child, else parent
+
+CHILD
+	- open file (argv[1]) into int fd
+	- make fd replace stdin 0 (dup2)
+	- replace stdout 1 with pipfd[1]
+	- close read end of pipe
+	- execute argv[2] mit env
+EXECVE
+	- split the command argv[2] into char array ** 
+	- get the path mit get_path (make yourself) --> erstes wort vom gesplitteten string ist der path?
+	- error handling fuer execve fail
+
+PARENT
+	- open file (argv[4]) into int fd
+	- make fd replace stdout 1 (dup2)
+	- replace stdin 0 with pipfd[0]
+	- close write end of pipe
+	- execute argv[3] mit env
