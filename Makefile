@@ -6,13 +6,13 @@
 #    By: hzimmerm <hzimmerm@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/11 19:00:12 by hzimmerm          #+#    #+#              #
-#    Updated: 2024/07/06 16:06:47 by hzimmerm         ###   ########.fr        #
+#    Updated: 2024/07/06 17:39:59 by hzimmerm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 CFLAGS = -g -Wall -Wextra -Werror -Isrcs/libft
-SRCS = srcs/main.c srcs/utils.c srcs/exits.c srcs/execution.c srcs/files.c
+SRCS = srcs/main.c srcs/utils.c srcs/exits.c srcs/execution.c srcs/files.c srcs/pipes.c
 LDFLAGS = -fsanitize=address
 LIBFT = srcs/libft/libft.a
 LIB = srcs/libft

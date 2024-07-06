@@ -6,7 +6,7 @@
 /*   By: hzimmerm <hzimmerm@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 19:32:02 by Henriette         #+#    #+#             */
-/*   Updated: 2024/07/04 16:02:20 by hzimmerm         ###   ########.fr       */
+/*   Updated: 2024/07/06 19:14:02 by hzimmerm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,3 @@ void	free_array(char **str)
 	}
 	free(str);
 }
-

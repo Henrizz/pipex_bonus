@@ -6,11 +6,66 @@
 /*   By: hzimmerm <hzimmerm@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 16:02:22 by hzimmerm          #+#    #+#             */
-/*   Updated: 2024/07/04 16:02:36 by hzimmerm         ###   ########.fr       */
+/*   Updated: 2024/07/06 19:18:03 by hzimmerm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
+
+int	find_command(char **argv, t_multi *pipex, char **cmd_file, char ***cmd)
+{
+	char	*temp;
+
+	if (ft_strrchr(argv[pipex->cmd_i + 2], '/'))
+	{
+		*cmd_file = ft_trim(argv[pipex->cmd_i + 2], ' ');
+		if (access(*cmd_file, X_OK) != 0)
+		{
+			ft_putstr_fd(*cmd_file, 2);
+			ft_putstr_fd(": command not found\n", 2);
+			return (-1);
+		}
+		temp = ft_strrchr(argv[pipex->cmd_i + 2], '/') + 1;
+		*cmd = ft_split(temp, ' ');
+		if (*cmd_file == NULL || *cmd[0] == NULL)
+		{
+			if (*cmd)
+				free_array(*cmd);
+			if (*cmd_file)
+				free(*cmd_file);
+			exit(EXIT_FAILURE);
+		}
+	}
+	return (0);
+}
+
+int	child_process_bonus(char **argv, char **env, t_multi *pipex)
+{
+	char	*cmd_file;
+	char	**cmd;
+
+	cmd_file = NULL;
+	cmd = NULL;
+	close_selected_pipes(pipex);
+	replace_pipes(pipex);
+	if (argv[pipex->cmd_i + 2][0] == '\0')
+		return (print_exit("Command '' not found\n"));
+	if (ft_strrchr(argv[pipex->cmd_i + 2], '/'))
+		find_command(argv, pipex, &cmd_file, &cmd);
+	else
+	{
+		cmd = ft_split(argv[pipex->cmd_i + 2], ' ');
+		cmd_file = find_cmd_file(cmd, env);
+		if (cmd_file == NULL)
+		{
+			free_array(cmd);
+			exit(EXIT_FAILURE);
+		}
+	}
+	execve(cmd_file, cmd, env);
+	free_array(cmd);
+	return (error_return("execve"));
+}
 
 char	*get_paths(char **env, char *name)
 {
