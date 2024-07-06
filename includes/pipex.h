@@ -6,7 +6,7 @@
 /*   By: hzimmerm <hzimmerm@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:02:55 by hzimmerm          #+#    #+#             */
-/*   Updated: 2024/07/04 16:13:37 by hzimmerm         ###   ########.fr       */
+/*   Updated: 2024/07/06 14:51:04 by hzimmerm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ char	*find_cmd_file(char **cmd, char **env);
 char	*get_paths(char **env, char *name);
 int	print_exit(char *message);
 int	error_exit(char *message);
+int	is_heredoc(char **argv);
 
 #endif

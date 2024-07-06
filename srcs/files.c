@@ -6,7 +6,7 @@
 /*   By: hzimmerm <hzimmerm@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 16:01:00 by hzimmerm          #+#    #+#             */
-/*   Updated: 2024/07/04 18:13:26 by hzimmerm         ###   ########.fr       */
+/*   Updated: 2024/07/06 16:21:51 by hzimmerm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,15 @@ void	get_input_append(int fd, char **argv, char *outfile, t_multi *pipex)
 	//check for errors in Delimiter name
 	while (1)
 	{
-		line = get_next_line(0);
+		line = get_next_line_new(0);
 		if (line == NULL)
-			return;
-		if (!ft_strncmp(line, argv[2], ft_strlen(line) - 1))
 		{
+			ft_putstr_fd("test1\n", 2);
+			return;
+		}	
+		if (!ft_strncmp(line, argv[2], ft_strlen(argv[2])))
+		{
+			ft_putstr_fd("test2\n", 2);
 			//ft_printf("endoffile\n");
 			free(line);
 			break;
@@ -67,12 +71,10 @@ void	get_input_append(int fd, char **argv, char *outfile, t_multi *pipex)
 	while (argv[3 + i])
 	{
 		//ft_printf("%s\n", argv[2 + i]);
-		argv[2 + i] = ft_strdup(argv[3 + i]);
-		if (argv[2 + i] == NULL)
-			return;
+		argv[2 + i] = argv[3 + i];
 		i++;
 	}
-	argv[3 + i] = NULL;
+	argv[2 + i] = NULL;
 }
 
 

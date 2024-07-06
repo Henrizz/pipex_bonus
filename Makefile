@@ -6,7 +6,7 @@
 #    By: hzimmerm <hzimmerm@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/11 19:00:12 by hzimmerm          #+#    #+#              #
-#    Updated: 2024/07/04 17:29:14 by hzimmerm         ###   ########.fr        #
+#    Updated: 2024/07/06 16:06:47 by hzimmerm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ $(NAME): $(OBJS)
 	@if [ ! -f "$(LIBFT)" ]; then \
 		make -C $(LIB); \
 	fi
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 	chmod +x $(NAME)
 
 %.o : %.c

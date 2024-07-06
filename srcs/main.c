@@ -6,7 +6,7 @@
 /*   By: hzimmerm <hzimmerm@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:02:29 by hzimmerm          #+#    #+#             */
-/*   Updated: 2024/07/04 16:34:06 by hzimmerm         ###   ########.fr       */
+/*   Updated: 2024/07/06 15:03:57 by hzimmerm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int	main(int argc, char **argv, char **env)
 	int	pid;
 	t_multi	pipex;
 
-	if (argc < 5)
+	if (argc < 5 + is_heredoc(argv))
 		return (print_exit("Error: not enough arguments\n"));
 	create_pipes(&pipex);
 	permissions_and_open(argc, argv, &pipex);
 	//permissions_and_open(argv[1], argv[2], argv[argc - 1], &pipex);
-	pipex.cmd_qty = argc - 3 - 1;
+	pipex.cmd_qty = argc - 3 - is_heredoc(argv);
 	pipex.cmd_i = 0;
 	while (pipex.cmd_i < pipex.cmd_qty) //fork all child processes
 	{
@@ -42,6 +42,12 @@ int	main(int argc, char **argv, char **env)
 	return (0);
 }
 
+int	is_heredoc(char **argv)
+{
+	if (!ft_strncmp(argv[1], "here_doc", 8))
+		return (1);
+	return (0);
+}
 
 int	child_process_bonus(char **argv, char **env, t_multi *pipex)
 {
@@ -53,7 +59,7 @@ int	child_process_bonus(char **argv, char **env, t_multi *pipex)
 	replace_pipes(pipex);
 	//close_all_pipes(pipex);
 	if (argv[pipex->cmd_i + 2][0] == '\0')
-		exit(EXIT_FAILURE);
+		return(print_exit("Error: empty command\n"));
 	cmd = ft_split(argv[pipex->cmd_i + 2], ' ');
 	cmd_file = find_cmd_file(cmd, env);
 	if (cmd_file == NULL)
