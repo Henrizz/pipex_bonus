@@ -6,7 +6,7 @@
 /*   By: hzimmerm <hzimmerm@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 16:01:00 by hzimmerm          #+#    #+#             */
-/*   Updated: 2024/07/06 17:31:14 by hzimmerm         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:56:31 by hzimmerm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	permissions_and_open(int argc, char **argv, t_multi *pipex)
 
 	infile = argv[1];
 	outfile = argv[argc - 1];
+	pipex->cmd_qty = argc - 3 - pipex->here_doc;
+	create_pipes(pipex);
 	if (!ft_strncmp(infile, "here_doc", 8))
 	{
 		fd = open(".here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -28,13 +30,7 @@ int	permissions_and_open(int argc, char **argv, t_multi *pipex)
 		get_input_append(fd, argv, outfile, pipex);
 	}
 	else
-	{
-		if (access(infile, R_OK) == -1)
-			return (error_exit(infile));
-		if (access(outfile, W_OK) == -1 && access(outfile, F_OK) == 0)
-			return (error_exit(outfile));
-		open_files(infile, outfile, pipex);
-	}
+		open_files(infile, outfile, pipex, O_TRUNC);
 	return (1);
 }
 
@@ -53,13 +49,33 @@ void	get_input_append(int fd, char **argv, char *outfile, t_multi *pipex)
 		ft_putstr_fd(line, fd);
 		free(line);
 	}
-	if (access(outfile, W_OK) == -1 && access(outfile, F_OK) == 0)
-		error_exit(outfile);
-	pipex->inf_fd = open(".here_doc", O_RDONLY);
-	pipex->outf_fd = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (pipex->inf_fd == -1 || pipex->outf_fd == -1)
-		error_exit("open");
+	open_files(".here_doc", outfile, pipex, O_APPEND);
 	remove_delimiter(argv);
+}
+
+void	open_files(char *infile, char *outfile, t_multi *pipex, int flag)
+{
+	if (access(infile, R_OK) == -1 && ft_strncmp(infile, "here_doc", 8))
+	{
+		error_return(infile);
+		pipex->denied_acc = 1;
+	}
+	else
+	{
+		if (flag == O_TRUNC)
+			pipex->inf_fd = open(infile, O_RDONLY);
+		else if (flag == O_APPEND)
+			pipex->inf_fd = open(".here_doc", O_RDONLY);
+	}
+	if (access(outfile, W_OK) == -1 && access(outfile, F_OK) == 0)
+	{
+		error_return(outfile);
+		pipex->denied_acc = 2;
+	}
+	else
+		pipex->outf_fd = open(outfile, O_WRONLY | O_CREAT | flag, 0644);
+	if (pipex->denied_acc == 0 && (pipex->inf_fd == -1 || pipex->outf_fd == -1))
+		error_exit("open");
 }
 
 void	remove_delimiter(char **argv)
@@ -73,12 +89,4 @@ void	remove_delimiter(char **argv)
 		i++;
 	}
 	argv[2 + i] = NULL;
-}
-
-void	open_files(char *infile, char *outfile, t_multi *pipex)
-{
-	pipex->inf_fd = open(infile, O_RDONLY);
-	pipex->outf_fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (pipex->inf_fd == -1 || pipex->outf_fd == -1)
-		error_exit("open");
 }

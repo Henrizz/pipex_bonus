@@ -6,7 +6,7 @@
 /*   By: hzimmerm <hzimmerm@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:02:55 by hzimmerm          #+#    #+#             */
-/*   Updated: 2024/07/06 19:13:40 by hzimmerm         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:57:59 by hzimmerm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ typedef struct s_multi
 {
 	int	cmd_qty;
 	int	cmd_i;
-	int	pipe_fd[2][2];
+	int	**pipe_fd;
 	int	inf_fd;
 	int	outf_fd;
 	int	curr;
 	int	prev;
 	int	here_doc;
+	int	denied_acc;
 }	t_multi;
 
 /* execution */
@@ -41,7 +42,7 @@ int		find_command(char **argv, t_multi *pipex, char **cmd_file, char ***cmd);
 /* files */
 void	get_input_append(int fd, char **argv, char *outfile, t_multi *pipex);
 int		permissions_and_open(int argc, char **argv, t_multi *pipex);
-void	open_files(char *infile, char *outfile, t_multi *pipex);
+void	open_files(char *infile, char *outfile, t_multi *pipex, int flag);
 int		is_heredoc(char **argv, t_multi *pipex);
 void	remove_heredoc(t_multi *pipex, char **env);
 void	remove_delimiter(char **argv);
@@ -49,7 +50,6 @@ void	remove_delimiter(char **argv);
 /* pipes */
 void	create_pipes(t_multi *pipex);
 void	close_all_pipes(t_multi *pipex);
-void	close_selected_pipes(t_multi *pipex);
 void	replace_pipes(t_multi *pipex);
 
 /* utils */

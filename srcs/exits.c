@@ -6,7 +6,7 @@
 /*   By: hzimmerm <hzimmerm@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 19:32:02 by Henriette         #+#    #+#             */
-/*   Updated: 2024/07/06 19:14:02 by hzimmerm         ###   ########.fr       */
+/*   Updated: 2024/07/10 11:54:06 by hzimmerm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	error_exit(char *message)
 int	print_exit(char *message)
 {
 	ft_putstr_fd(message, 2);
-	return (0);
+	exit(EXIT_FAILURE);
 }
 
 void	free_array(char **str)

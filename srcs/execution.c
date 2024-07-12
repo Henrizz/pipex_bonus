@@ -6,7 +6,7 @@
 /*   By: hzimmerm <hzimmerm@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 16:02:22 by hzimmerm          #+#    #+#             */
-/*   Updated: 2024/07/06 19:18:03 by hzimmerm         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:57:03 by hzimmerm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	child_process_bonus(char **argv, char **env, t_multi *pipex)
 
 	cmd_file = NULL;
 	cmd = NULL;
-	close_selected_pipes(pipex);
 	replace_pipes(pipex);
+	close_all_pipes(pipex);
 	if (argv[pipex->cmd_i + 2][0] == '\0')
 		return (print_exit("Command '' not found\n"));
 	if (ft_strrchr(argv[pipex->cmd_i + 2], '/'))
@@ -64,7 +64,7 @@ int	child_process_bonus(char **argv, char **env, t_multi *pipex)
 	}
 	execve(cmd_file, cmd, env);
 	free_array(cmd);
-	return (error_return("execve"));
+	return (error_exit("execve"));
 }
 
 char	*get_paths(char **env, char *name)
