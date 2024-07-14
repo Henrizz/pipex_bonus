@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = pipex
-CFLAGS = -g -Wall -Wextra -Werror -Isrcs/libft
+CFLAGS = -g -Wall -Wextra -Werror -fPIE -fPIC -Isrcs/libft
 SRCS = srcs/main.c srcs/utils.c srcs/exits.c srcs/execution.c srcs/files.c srcs/pipes.c
 LDFLAGS = -fsanitize=address
 LIBFT = srcs/libft/libft.a
