@@ -1,3 +1,6 @@
+PIPEX
+with bonus
+
 Pipex is a 42 school project written in C, which is about recreating the behaviour of a pipe symbol in a command line, redirecting the output of one command as input for the following. 
 The porject followins a specific command set up: the first command gets its input from a file and the last command outputs to another file. 
 
